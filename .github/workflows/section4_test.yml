@@ -57,8 +57,13 @@ jobs:
           path: dist/
       - name: get_the_app_name
         id: outputAppName
-        run: find dist/assets/*.js -type f -execdir echo 'appName = {}' >> "$GITHUB_OUTPUT" ';'
-
+        run: |
+          app_file=$(find dist/assets -maxdepth 1 -type f -name '*.js' -print -quit)
+          if [[ -z "$app_file" ]]; then
+            echo "No JavaScript bundle found in dist/assets" >&2
+            exit 1
+          fi
+          echo "appName=$(basename "$app_file")" >> "$GITHUB_OUTPUT"
 
   deploy:
     needs: build
@@ -66,5 +71,4 @@ jobs:
     steps:
       - name: getBuildName
         run: echo "${{needs.build.outputs.appName}}"
-
 
