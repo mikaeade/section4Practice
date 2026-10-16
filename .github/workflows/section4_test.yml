@@ -30,8 +30,11 @@ jobs:
 
       - name: Run tests
         run: npm test
+      
   build:
     runs-on: ubuntu-latest
+    outputs: 
+      appName: ${{steps.outputAppName.outputs.appName}}
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -51,11 +54,17 @@ jobs:
         uses: actions/upload-artifact@v4
         with: 
           name: dist-files_mieade
-          path: |
-            dist/
+          path: dist/
+      - name: get_the_app_name
+        id: outputAppName
+        run: find dist/assets/*.js -type f -execdir echo 'appName = {}' >> $GITHUB_OUTPUT ';'
+
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
-        - run: echo "test"
+      - name: getBuildName
+        run: echo ${{needs.build.outputs.appName}}
+
 
