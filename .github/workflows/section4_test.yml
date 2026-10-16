@@ -57,7 +57,7 @@ jobs:
           path: dist/
       - name: get_the_app_name
         id: outputAppName
-        run: find dist/assets/*.js -type f -execdir echo 'appName = {}' >> $GITHUB_OUTPUT ';'
+        run: find dist/assets/*.js -type f -execdir echo 'appName = {}' >> "$GITHUB_OUTPUT" ';'
 
 
   deploy:
