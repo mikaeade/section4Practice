@@ -1,1 +1,32 @@
+name: Section4Workflow
+on:
+  pull_request:
+    types: [opened]
+  workflow_dispatch:
 
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output event data
+        run: printf '%s\n' "$GITHUB_EVENT"
+        env:
+          GITHUB_EVENT: ${{ toJSON(github.event) }}
+
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build app
+        run: npm run build
