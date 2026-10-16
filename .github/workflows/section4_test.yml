@@ -65,6 +65,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: getBuildName
-        run: echo ${{needs.build.outputs.appName}}
+        run: echo "${{needs.build.outputs.appName}}"
 
 
