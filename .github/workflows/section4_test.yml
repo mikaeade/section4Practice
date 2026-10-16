@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Output event data
-        run: printf '%s\n' "$GITHUB_EVENT"
+        run: printf '%s\n + test' "$GITHUB_EVENT"
         env:
           GITHUB_EVENT: ${{ toJSON(github.event) }}
 
